@@ -1,0 +1,65 @@
+# Copyright (c) 2024-2025 Ziqi Fan
+# SPDX-License-Identifier: Apache-2.0
+# Parkour student model config - adapted from IsaacLab
+
+go2/parkour:
+  model_name: "policy.pt"
+  num_observations: 753  # 53+132+9+29+530 (proprio+scan+priv_explicit+priv_latent+history)
+  observations: []
+  observations_history: []
+  observations_history_priority: "time"
+  clip_obs: 100.0
+  clip_actions_lower: [-4.8, -4.8, -4.8,
+                       -4.8, -4.8, -4.8,
+                       -4.8, -4.8, -4.8,
+                       -4.8, -4.8, -4.8]
+  clip_actions_upper: [4.8, 4.8, 4.8,
+                       4.8, 4.8, 4.8,
+                       4.8, 4.8, 4.8,
+                       4.8, 4.8, 4.8]
+  rl_kp: [40.0, 40.0, 40.0,
+          40.0, 40.0, 40.0,
+          40.0, 40.0, 40.0,
+          40.0, 40.0, 40.0]
+  rl_kd: [1.0, 1.0, 1.0,
+          1.0, 1.0, 1.0,
+          1.0, 1.0, 1.0,
+          1.0, 1.0, 1.0]
+  fixed_kp: [80.0, 80.0, 80.0,
+             80.0, 80.0, 80.0,
+             80.0, 80.0, 80.0,
+             80.0, 80.0, 80.0]
+  fixed_kd: [3.0, 3.0, 3.0,
+             3.0, 3.0, 3.0,
+             3.0, 3.0, 3.0,
+             3.0, 3.0, 3.0]
+  num_of_dofs: 12
+  action_scale: [0.25, 0.25, 0.25,
+                 0.25, 0.25, 0.25,
+                 0.25, 0.25, 0.25,
+                 0.25, 0.25, 0.25]
+  wheel_indices: []
+  lin_vel_scale: 1.0
+  ang_vel_scale: 0.25
+  dof_pos_scale: 1.0
+  dof_vel_scale: 0.05
+  commands_scale: [1.0, 1.0, 1.0]
+  torque_limits: [35.0, 45.0, 45.0,
+                  35.0, 45.0, 45.0,
+                  35.0, 45.0, 45.0,
+                  35.0, 45.0, 45.0]
+  # Policy order used by this exported parkour model:
+  # [FL_hip, FR_hip, RL_hip, RR_hip, FL_thigh, FR_thigh, RL_thigh, RR_thigh, FL_calf, FR_calf, RL_calf, RR_calf].
+  default_dof_pos: [ 0.1, -0.1,  0.1, -0.1,
+                     0.8,  0.8,  1.0,  1.0,
+                    -1.5, -1.5, -1.5, -1.5]
+  # Policy order -> Gazebo controller order [FR, FL, RR, RL] x [hip, thigh, calf].
+  joint_mapping: [3, 0, 9, 6, 4, 1, 10, 7, 5, 2, 11, 8]
+  # Parkour specific parameters
+  num_prop: 53
+  num_scan: 132
+  num_priv_explicit: 9
+  num_priv_latent: 29
+  history_length: 10
+  scandots_latent_dim: 32
+  use_depth: true

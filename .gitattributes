@@ -1,0 +1,7 @@
+*.sh eol=lf
+*.pt filter=lfs diff=lfs merge=lfs -text
+*.so filter=lfs diff=lfs merge=lfs -text
+*.a filter=lfs diff=lfs merge=lfs -text
+*.bin filter=lfs diff=lfs merge=lfs -text
+library/inference_runtime/libtorch/lib/libtorch_cpu.so filter=lfs diff=lfs merge=lfs -text
+library/inference_runtime/libtorch/lib/libdnnl.a filter=lfs diff=lfs merge=lfs -text
