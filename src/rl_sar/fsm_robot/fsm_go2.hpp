@@ -24,7 +24,10 @@ public:
         rl.InitOutputs();
         rl.config_name.clear();
         rl.rl_init_done = false;
-        std::cout << LOGGER::NOTE << "Entered passive mode. Press '0' (Keyboard) or 'A' (Gamepad) to switch to RLFSMStateGetUp." << std::endl;
+        std::cout << LOGGER::NOTE
+                  << "Entered passive mode. Press '0' (Keyboard) or 'A' (Gamepad) to get up. "
+                  << "After get-up: press '1' for parkour, '2' for himloco."
+                  << std::endl;
     }
 
     void Run() override
@@ -112,6 +115,12 @@ public:
         {
             if (rl.control.current_keyboard == Input::Keyboard::Num1 || rl.control.current_gamepad == Input::Gamepad::RB_DPadUp)
             {
+                rl.config_name = "parkour";
+                return "RLFSMStateRLLocomotion";
+            }
+            else if (rl.control.current_keyboard == Input::Keyboard::Num2)
+            {
+                rl.config_name = "himloco";
                 return "RLFSMStateRLLocomotion";
             }
             else if (rl.control.current_keyboard == Input::Keyboard::Num9 || rl.control.current_gamepad == Input::Gamepad::B)
@@ -172,7 +181,10 @@ public:
         rl.episode_length_buf = 0;
 
         // read params from yaml
-        rl.config_name = "parkour";
+        if (rl.config_name.empty())
+        {
+            rl.config_name = "parkour";
+        }
         std::string robot_config_path = rl.robot_name + "/" + rl.config_name;
         try
         {
@@ -237,6 +249,16 @@ public:
         }
         else if (rl.control.current_keyboard == Input::Keyboard::Num1 || rl.control.current_gamepad == Input::Gamepad::RB_DPadUp)
         {
+            std::cout << std::endl << LOGGER::NOTE
+                      << "Already in RL. To switch controllers, press '0' to return to get-up, then press '1' for parkour or '2' for himloco."
+                      << std::endl;
+            return "RLFSMStateRLLocomotion";
+        }
+        else if (rl.control.current_keyboard == Input::Keyboard::Num2)
+        {
+            std::cout << std::endl << LOGGER::NOTE
+                      << "Already in RL. To switch controllers, press '0' to return to get-up, then press '1' for parkour or '2' for himloco."
+                      << std::endl;
             return "RLFSMStateRLLocomotion";
         }
         return state_name_;
